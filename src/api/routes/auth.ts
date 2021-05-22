@@ -49,6 +49,7 @@ export default (app: Router) => {
 				const authServiceInstance = new AuthService();
 
 				const { user } = await authServiceInstance.SignOut(req.body);
+				console.log(user);
 				return res.status(200).json({ user });
 			} catch (e) {
 				next(e);
