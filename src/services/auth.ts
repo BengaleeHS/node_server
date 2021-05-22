@@ -41,6 +41,7 @@ export default class AuthService {
 			}
 			let game = await this.isGameExists(userInputDTO.game_id)
 				
+
 			let userRecord = User.create({ ...userInputDTO });
 
 			const getSameUsername = await User.find({

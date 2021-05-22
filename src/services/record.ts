@@ -61,16 +61,13 @@ export default class RecordService{
     }
 
     public async GetUserRating(game_id:number, user_id:number): Promise<{rating:IDataRating}>{
-        try{
-            let rating = await Record.findOne({game_id: game_id, user_id: user_id});
-            if(typeof rating === 'undefined') {
-                const err =new Error("User record missing!");
-                throw(err);
-            }
-            return {rating};
-        } catch(e){
-            throw(e)
+        let record = await Record.findOne({game_id: game_id, user_id: user_id});
+        if(!record) {
+            throw Error("User record missing!");
         }
+        const rating = JSON.parse(JSON.stringify(record));
+
+        return {rating};
         
     }
 
