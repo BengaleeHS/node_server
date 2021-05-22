@@ -31,4 +31,6 @@ export default class FindOpponent extends BaseEntity {
 
 	@CreateDateColumn({ name: 'created_at' })
 	created_at: Date;
+
+	
 }
