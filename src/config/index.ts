@@ -20,6 +20,13 @@ export default {
 		prefix: '/api',
 	},
 
+	rating: {
+		r1_init: 1000,
+		r2_init: 1000,
+		r1_k: 32,
+		r2_k: 0.5
+	},
+
 	/**
 	 * Database configs - postgreSQL
 	 */

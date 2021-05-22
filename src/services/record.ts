@@ -2,7 +2,7 @@ import {IDataMatchLog, IDataRating} from '../interfaces/IData'
 import User from '../models/User';
 import Record from '../models/Record';
 import Log from '../models/Log';
-import record from '../api/routes/record';
+import config from '../config/index';
 export default class RecordService{
 
     public async Record(dataMatchLog : IDataMatchLog){
@@ -15,9 +15,16 @@ export default class RecordService{
             let prevRecordA = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_a_id});
             let prevRecordB = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_b_id});
             
+            if(typeof prevRecordA === 'undefined'){
+                prevRecordA = await Record.create({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_a_id, rating_1:config.rating.r1_init, rating_2:config.rating.r2_init}).save();
+            }
+            if(typeof prevRecordB === 'undefined'){
+                prevRecordB = await Record.create({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_b_id, rating_1:config.rating.r1_init, rating_2:config.rating.r2_init}).save();
+            }
+
             //calculate new rating
-            const [rating_1_a, rating_1_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_point,dataMatchLog.b_point,'elo',25);
-            const [rating_2_a, rating_2_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_point,dataMatchLog.b_point,'decay',0.6);
+            const [rating_1_a, rating_1_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_point,dataMatchLog.b_point,'elo',config.rating.r1_k);
+            const [rating_2_a, rating_2_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_point,dataMatchLog.b_point,'decay',config.rating.r2_k);
 
             //put updated rating in the Record table
             await Record.update({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_a_id},{rating_1:rating_1_a, rating_2:rating_2_a});

@@ -22,13 +22,14 @@ export default async (): Promise<Connection> => {
 		entities: [User, Record, Log, Game, FindOpponent],
 		// dropSchema는 커넥션이 실행 될 때마다 데이터베이스를 삭제하고 생성합니다.
 		// 개발버전에서만 사용해야합니다.
-		dropSchema: false,
+		dropSchema: true,
 	});
 
 	/**
 	 * 아래 부분은 데이터베이스의 초기 rows들을 정의하는 부분입니다.
 	 * @TODO 서버의 개발 방향에 따라 알맞게 수정하시면 됩니다.
 	 */
+	await Game.create({game_name:"tictactoe", rating_type:1, matching_range:500, matching_duration:1000}).save();
 	process.stdout.write('🍓 Creating initial rows of creamo_user table');
 	process.stdout.cursorTo(48);
 	return dbConnection;

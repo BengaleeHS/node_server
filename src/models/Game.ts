@@ -14,7 +14,7 @@ import FindOpponent from '../models/FindOpponent';
 
 // user는 postgreSQL의 예약어라 사용이 불가합니다.
 @Entity({ name: 'game' })
-export default class User extends BaseEntity {
+export default class Game extends BaseEntity {
 	@PrimaryGeneratedColumn({ name: 'game_id' })
 	game_id: number;
 
