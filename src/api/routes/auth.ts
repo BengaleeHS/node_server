@@ -62,6 +62,11 @@ export default (app: Router) => {
 			try {
 				//const { user_name } = req.body;
 				const authServiceInstance = new AuthService();
+<<<<<<< Updated upstream
+=======
+				const { user } = await authServiceInstance.GetUser(req.body);
+				const udat : IUserInputDTO = req.body;
+>>>>>>> Stashed changes
 				const recordServiceInstance = new RecordService();
 				const { user } = await authServiceInstance.GetUser(req.body);
 				console.log(user.game_id);
