@@ -32,7 +32,7 @@ export default(app:Router) =>{
                 } else{
                     
                     
-                    const matchOpponents = await Record.createQueryBuilder('record').innerJoin('record.user_id','find_opponent').where('record.game_id = :gid',{gid:matchInfo.game_id})
+                    const matchOpponents = await Record.createQueryBuilder('record').innerJoin('record.user_id','find_opponent').where('record.game_id = :gid',{gid:matchInfo.game_id}).getMany();
                     //await FindOpponent.createQueryBuilder('opponent').innerJoinAndSelect('opponent.user_id','record').where('opponent.game_id = :gid',{gid:matchInfo.game_id}).getOne();
                     console.log(matchOpponents);
                     const gameInfo = await Game.findOne({game_id:matchInfo.game_id});
