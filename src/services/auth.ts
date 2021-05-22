@@ -43,8 +43,7 @@ export default class AuthService {
 			let game_id = await this.isGameExists(userInputDTO.game_id)
 			
 
-			let userRecord = User.create({ ...userInputDTO });
-			
+
 			const getSameUsername = await User.find({
 				user_name: userInputDTO.user_name,
 				game_id: userInputDTO.game_id,
@@ -54,10 +53,11 @@ export default class AuthService {
 			if (getSameUsername.length) {
 				throw new Error('This user name for this game is already being used');
 			}
-			
-			userRecord = await userRecord.save();
 
-			let gameRecord = Record.create({game_id:userInputDTO.game_id,user_id:userRecord.user_id,rating_1:config.rating.r1_init, rating_2:config.rating.r2_init } );
+			let userRecord = User.create({ ...userInputDTO });
+			await userRecord.save();
+
+			let gameRecord = Record.create({game_id:userInputDTO.game_id, user_id:userRecord.user_id,rating_1:config.rating.r1_init, rating_2:config.rating.r2_init } );
 			await gameRecord.save()
 			const user = JSON.parse(JSON.stringify(userRecord));
 
@@ -76,7 +76,7 @@ export default class AuthService {
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
-
+		
 		userRecord.is_login = true;
 
 		await userRecord.save();
@@ -108,13 +108,14 @@ export default class AuthService {
 	 * 유저 이름을 입력하고 현재 유저의 상태를 반환한다.
 	 * @param userName 유저 이름
 	 */
-	public async GetUser(userInputDTO:IUserInputDTO): Promise<{ user: User}> {
-		const userRecord = await User.findOne({ ...userInputDTO });
+	public async GetUser(userInputDTO:IUserInputDTO): Promise<{ user: IUser}> {
+		
+		const userRecord = await User.findOne({ user_name: userInputDTO.user_name, game_id:userInputDTO.game_id });
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
-		//const user = JSON.parse(JSON.stringify(userRecord));
+		const user = JSON.parse(JSON.stringify(userRecord));
 		
-		return {user:userRecord} ;
+		return {user} ;
 	}
 }

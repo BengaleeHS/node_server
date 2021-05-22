@@ -18,7 +18,7 @@ export default class Record extends BaseEntity {
 	@ManyToOne(() => Game)
 	@JoinColumn({name: "game_id", referencedColumnName: "game_id"})
 	game_id: number;
-
+	
 	@Column({primary: true})
 	@ManyToOne(() => User)
 	@JoinColumn({name: "user_id", referencedColumnName: "user_id"})

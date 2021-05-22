@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { IUserInputDTO } from '../../interfaces/IUser';
 import AuthService from '../../services/auth';
 import RecordService from '../../services/record';
 import middlewares from '../middlewares';
@@ -49,6 +50,7 @@ export default (app: Router) => {
 				const authServiceInstance = new AuthService();
 
 				const { user } = await authServiceInstance.SignOut(req.body);
+				console.log(user);
 				return res.status(200).json({ user });
 			} catch (e) {
 				next(e);
@@ -56,21 +58,16 @@ export default (app: Router) => {
 		},
 	);
 
-	route.get(
+	route.post(
 		'/user',
 		async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				//const { user_name } = req.body;
 				const authServiceInstance = new AuthService();
-<<<<<<< Updated upstream
-=======
+
 				const { user } = await authServiceInstance.GetUser(req.body);
 				const udat : IUserInputDTO = req.body;
->>>>>>> Stashed changes
 				const recordServiceInstance = new RecordService();
-				const { user } = await authServiceInstance.GetUser(req.body);
-				console.log(user.game_id);
-				const {rating} = await recordServiceInstance.GetUserRating(user.game_id,user.user_id);
+				const {rating} = await recordServiceInstance.GetUserRating(udat.game_id,user.user_id);
 				return res.status(200).json({ ...user, ...rating  });
 			} catch (e) {
 				next(e);
