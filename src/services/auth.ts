@@ -109,8 +109,8 @@ export default class AuthService {
 	 * @param userName 유저 이름
 	 */
 	public async GetUser(userInputDTO:IUserInputDTO): Promise<{ user: IUser}> {
-		console.log(JSON.stringify({...userInputDTO}));
-		const userRecord = await User.findOne({ ...userInputDTO });
+		
+		const userRecord = await User.findOne({ user_name:userInputDTO.user_name, game_id:userInputDTO.game_id });
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}

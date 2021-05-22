@@ -60,12 +60,11 @@ export default (app: Router) => {
 		'/user',
 		async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const { game_id, user_name } = req.body;
 				const authServiceInstance = new AuthService();
 				const recordServiceInstance = new RecordService();
 				const { user } = await authServiceInstance.GetUser(req.body);
-				console.log(game_id);
-				const {rating} = await recordServiceInstance.GetUserRating(game_id,user.user_id);
+				console.log(user);
+				const {rating} = await recordServiceInstance.GetUserRating(user.game_id,user.user_id);
 				return res.status(200).json({ ...user, ...rating  });
 			} catch (e) {
 				next(e);
