@@ -64,8 +64,7 @@ export default (app: Router) => {
 				const authServiceInstance = new AuthService();
 				const recordServiceInstance = new RecordService();
 				const { user } = await authServiceInstance.GetUser(req.body);
-				console.log(req.body.game_id);
-				const {rating} = await recordServiceInstance.GetUserRating(req.body.game_id, user.user_id);
+				const {rating} = await recordServiceInstance.GetUserRating(user.game_id, user.user_id);
 				return res.status(200).json({ ...user, ...rating  });
 			} catch (e) {
 				next(e);
