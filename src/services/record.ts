@@ -21,10 +21,10 @@ export default class RecordService{
 
             //put updated rating in the Record table
             await Record.update({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_a_id},{rating_1:rating_1_a, rating_2:rating_2_a});
-            await Record.update({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_a_id},{rating_1:rating_1_b, rating_2:rating_2_b});
+            await Record.update({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_b_id},{rating_1:rating_1_b, rating_2:rating_2_b});
 
             await createLog.save();
-            return {Ra1:rating_1_a, Ra2:rating_2_a, Rb1:rating_1_b, Rb2:rating_2_b};
+            return {"Ra1":rating_1_a, "Ra2":rating_2_a, "Rb1":rating_1_b, "Rb2":rating_2_b};
         } catch(e){
             throw(e);
         }
