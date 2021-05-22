@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import User from '../models/User';
 import Game from '../models/Game';
+import Record from '../models/Record';
 import { IUser, IUserInputDTO } from '../interfaces/IUser';
 
 /**
@@ -39,11 +40,11 @@ export default class AuthService {
 				err['status'] = 400;
 				throw err;
 			}
-			let game = await this.isGameExists(userInputDTO.game_id)
-				
+			let game_id = await this.isGameExists(userInputDTO.game_id)
+			
 
 			let userRecord = User.create({ ...userInputDTO });
-
+			
 			const getSameUsername = await User.find({
 				user_name: userInputDTO.user_name,
 				game_id: userInputDTO.game_id,
@@ -53,8 +54,10 @@ export default class AuthService {
 			if (getSameUsername.length) {
 				throw new Error('This user name for this game is already being used');
 			}
+			
+			userRecord = await userRecord.save();
 
-			await userRecord.save();
+			let gameRecord = Record.create({...userInputDTO,user_id:userRecord.user_id } );
 			const user = JSON.parse(JSON.stringify(userRecord));
 
 			return { user };
