@@ -31,8 +31,8 @@ export default(app:Router) =>{
                     throw new Error("Already exists. Please use /poll");
                 } else{
                     
-                    
-                    const matchOpponents = await FindOpponent.createQueryBuilder('opponent').innerJoinAndSelect('opponent.user_id','record').where('opponent.game_id = :gid',{gid:matchInfo.game_id}).getMany();
+                    //.where('opponent.game_id = :gid',{gid:matchInfo.game_id})
+                    const matchOpponents = await FindOpponent.createQueryBuilder('opponent').innerJoinAndSelect('opponent.user_id','record').getMany();
                     console.log(matchOpponents);
                     const gameInfo = await Game.findOne({game_id:matchInfo.game_id});
                     let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location});
