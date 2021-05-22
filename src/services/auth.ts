@@ -24,9 +24,11 @@ export default class AuthService {
 			game_id: game_id,
 		});
 		if (!gameExists) {
-			return false;
+			const err = new Error('The game do not exists');
+				err['status'] = 400;
+				throw err;
 		}
-		return false;
+		return gameExists;
 	}
 
 	public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
@@ -37,11 +39,8 @@ export default class AuthService {
 				err['status'] = 400;
 				throw err;
 			}
-			if((await this.isGameExists(userInputDTO.game_id) )=== false){
-				const err = new Error('The game do not exists');
-				err['status'] = 400;
-				throw err;
-			}
+			let game = await this.isGameExists(userInputDTO.game_id)
+				
 			let userRecord = User.create({ ...userInputDTO });
 
 			const getSameUsername = await User.find({
