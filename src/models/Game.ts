@@ -31,7 +31,7 @@ export default class Game extends BaseEntity {
 	@Column({ name: 'matching_duration' })
 	matching_duration: number;
 
-	@OneToMany(() => User, useruser => useruser.game_id)
+	@OneToMany(() => User, user => user.game_id)
 	users: User[];
 
 	@OneToMany(() => FindOpponent, findOpponent => findOpponent.game_id)
