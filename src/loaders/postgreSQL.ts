@@ -4,10 +4,10 @@ import AuthService from '../services/auth';
 import config from '../config';
 
 import User from '../models/User';
-import Record from "../models/Record";
-import Log from "../models/Log";
-import Game from "../models/Game";
-import FindOpponent from "../models/FindOpponent";
+import Record from '../models/Record';
+import Log from '../models/Log';
+import Game from '../models/Game';
+import FindOpponent from '../models/FindOpponent';
 
 export default async (): Promise<Connection> => {
 	const dbConnection = await createConnection({
@@ -19,13 +19,7 @@ export default async (): Promise<Connection> => {
 		database: config.db.database,
 		synchronize: true,
 		logging: false,
-		entities: [
-			User,
-			Record,
-			Log,
-			Game,
-			FindOpponent,
-		],
+		entities: [User, Record, Log, Game, FindOpponent],
 		// dropSchema는 커넥션이 실행 될 때마다 데이터베이스를 삭제하고 생성합니다.
 		// 개발버전에서만 사용해야합니다.
 		dropSchema: true,
@@ -37,6 +31,5 @@ export default async (): Promise<Connection> => {
 	 */
 	process.stdout.write('🍓 Creating initial rows of creamo_user table');
 	process.stdout.cursorTo(48);
-	process.stdout.write('(1/3)\n');
 	return dbConnection;
 };
