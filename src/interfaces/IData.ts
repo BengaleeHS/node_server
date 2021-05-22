@@ -1,3 +1,4 @@
+
 export interface IDataMatchLog{
     game_id : number;
     user_a_id : number;
@@ -13,3 +14,4 @@ export interface IDataRating{
     rating_1 : number;
     rating_2: number;
 }
+
