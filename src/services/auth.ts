@@ -57,7 +57,8 @@ export default class AuthService {
 			
 			userRecord = await userRecord.save();
 
-			let gameRecord = Record.create({...userInputDTO,user_id:userRecord.user_id } );
+			let gameRecord = Record.create({game_id:userInputDTO.game_id,user_id:userRecord.user_id,rating_1:config.rating.r1_init, rating_2:config.rating.r2_init } );
+			await gameRecord.save()
 			const user = JSON.parse(JSON.stringify(userRecord));
 
 			return { user };
