@@ -1,39 +1,10 @@
 export interface IUser {
-	id: number;
-	name: string;
-	email: string;
-	password: string;
-	salt: string;
+	user_id: number;
+	user_name: string;
+	is_login: boolean;
 }
 
 export interface IUserInputDTO {
-	name: string;
-	email: string;
-	password: string;
+	user_name: string;
 }
 
-export interface IUserCreateInputDTO {
-	role_id: number;
-	name: string;
-	email: string;
-	password: string;
-}
-
-export interface IUserReadInputDTO {
-	id?: number;
-	role_id?: number;
-	name?: string;
-	email?: string;
-}
-
-export interface IUserUpdateInputDTO {
-	id: number;
-	role_id?: number;
-	name?: string;
-	password?: string;
-	salt?: string;
-}
-
-export interface IUserDeleteInputDTO {
-	id: number;
-}

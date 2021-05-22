@@ -21,6 +21,9 @@ export default class User extends BaseEntity {
 	@Column({ name: 'user_name' })
 	user_name: string;
 
+	@Column({name: "is_login", default: false})
+	is_login: boolean;
+
 	@OneToMany(() => FindOpponent, findOpponent => findOpponent.user_id)
 	find_opponents: FindOpponent[];
 	
