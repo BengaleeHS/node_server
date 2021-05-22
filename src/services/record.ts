@@ -1,3 +1,4 @@
+import {IUserInputDTO, IUser} from '../interfaces/IUser';
 import {IDataMatchLog, IDataRating} from '../interfaces/IData'
 import User from '../models/User';
 import Record from '../models/Record';
@@ -15,11 +16,9 @@ export default class RecordService{
             let prevRecordA = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_a_id});
             let prevRecordB = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_b_id});
             
-            if(typeof prevRecordA === 'undefined'){
-                prevRecordA = await Record.create({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_a_id, rating_1:config.rating.r1_init, rating_2:config.rating.r2_init}).save();
-            }
-            if(typeof prevRecordB === 'undefined'){
-                prevRecordB = await Record.create({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_b_id, rating_1:config.rating.r1_init, rating_2:config.rating.r2_init}).save();
+            if(typeof prevRecordA === 'undefined' || typeof prevRecordB === 'undefined'){
+                const err =new Error("User record missing!");
+                throw(err);
             }
 
             //calculate new rating
@@ -60,4 +59,19 @@ export default class RecordService{
     private decay(r:number, s:number, d:number):number{
         return Math.round(1000*s+r*d);
     }
+
+    public async GetUserRating(game_id:number, user_id:number): Promise<{rating:IDataRating}>{
+        try{
+            let rating = await Record.findOne({game_id: game_id, user_id: user_id});
+            if(typeof rating === 'undefined') {
+                const err =new Error("User record missing!");
+                throw(err);
+            }
+            return {rating};
+        } catch(e){
+            throw(e)
+        }
+        
+    }
+
 }

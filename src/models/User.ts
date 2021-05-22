@@ -11,7 +11,7 @@ import {
 import FindOpponent from '../models/FindOpponent';
 import Record from '../models/Record';
 import Log from '../models/Log';
-
+import Game from '../models/Game';
 // user는 postgreSQL의 예약어라 사용이 불가합니다.
 @Entity({ name: 'chobo_user' })
 export default class User extends BaseEntity {
@@ -23,6 +23,10 @@ export default class User extends BaseEntity {
 
 	@Column({ name: 'is_login', default: false })
 	is_login: boolean;
+
+	@ManyToOne(() => Game)
+	@JoinColumn({ name: 'game_id', referencedColumnName: "game_id" })
+	game_id: number;
 
 	@OneToMany(() => FindOpponent, findOpponent => findOpponent.user_id)
 	find_opponents: FindOpponent[];

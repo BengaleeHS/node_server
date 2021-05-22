@@ -21,7 +21,7 @@ export default class AuthService {
 	public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
 		try {
 			/* 모든 정보가 입력되었는지 확인한다 */
-			if (typeof userInputDTO.user_name === 'undefined') {
+			if (typeof userInputDTO.user_name === 'undefined' || typeof userInputDTO.game_id === 'undefined') {
 				const err = new Error('There is information not entered');
 				err['status'] = 400;
 				throw err;
@@ -31,11 +31,12 @@ export default class AuthService {
 
 			const getSameUsername = await User.find({
 				user_name: userInputDTO.user_name,
+				game_id: userInputDTO.game_id,
 			});
 
-			/* 데이터베이스에 같은 username이 존재하는지 확인한다 */
+			/* 데이터베이스에 같은 username, gameid가 존재하는지 확인한다 */
 			if (getSameUsername.length) {
-				throw new Error('This user name is already being used');
+				throw new Error('This user name for this game is already being used');
 			}
 
 			await userRecord.save();
@@ -51,8 +52,8 @@ export default class AuthService {
 	 * 유저 이름을 입력하고 로그인을 진행한다.
 	 * @param userName 유저 이름
 	 */
-	public async SignIn(userName: string): Promise<{ user: IUser }> {
-		const userRecord = await User.findOne({ user_name: userName });
+	public async SignIn(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
+		const userRecord = await User.findOne({ user_name: userInputDTO.user_name, game_id:userInputDTO.game_id });
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
@@ -69,8 +70,8 @@ export default class AuthService {
 	 * 유저 이름을 입력하고 로그아웃을 진행한다.
 	 * @param userName 유저 이름
 	 */
-	public async SignOut(userName: string): Promise<{ user: IUser }> {
-		const userRecord = await User.findOne({ user_name: userName });
+	public async SignOut(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
+		const userRecord = await User.findOne({ user_name: userInputDTO.user_name, game_id:userInputDTO.game_id });
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
@@ -88,12 +89,11 @@ export default class AuthService {
 	 * 유저 이름을 입력하고 현재 유저의 상태를 반환한다.
 	 * @param userName 유저 이름
 	 */
-	public async GetUser(userName: string): Promise<{ user: IUser }> {
+	public async GetUser(userName: string): Promise<{ user: IUser}> {
 		const userRecord = await User.findOne({ user_name: userName });
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
-
 		const user = JSON.parse(JSON.stringify(userRecord));
 
 		return { user };

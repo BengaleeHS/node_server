@@ -11,6 +11,7 @@ import {
 import Record from '../models/Record';
 import Log from '../models/Log';
 import FindOpponent from '../models/FindOpponent';
+import User from '../models/User';
 
 // user는 postgreSQL의 예약어라 사용이 불가합니다.
 @Entity({ name: 'game' })
@@ -29,6 +30,9 @@ export default class Game extends BaseEntity {
 
 	@Column({ name: 'matching_duration' })
 	matching_duration: number;
+
+	@OneToMany(() => User, useruser => useruser.game_id)
+	users: User[];
 
 	@OneToMany(() => FindOpponent, findOpponent => findOpponent.game_id)
 	find_opponents: FindOpponent[];

@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import AuthService from '../../services/auth';
+import RecordService from '../../services/record';
 import middlewares from '../middlewares';
 
 const route = Router();
@@ -29,10 +30,10 @@ export default (app: Router) => {
 		'/signin',
 		async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const { user_name } = req.body;
+				//const { user_name } = req.body;
 				const authServiceInstance = new AuthService();
 
-				const { user } = await authServiceInstance.SignIn(user_name);
+				const { user } = await authServiceInstance.SignIn(req.body);
 				return res.status(200).json({ user });
 			} catch (e) {
 				next(e);
@@ -44,10 +45,10 @@ export default (app: Router) => {
 		'/signout',
 		async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const { user_name } = req.body;
+				//const { user_name } = req.body;
 				const authServiceInstance = new AuthService();
 
-				const { user } = await authServiceInstance.SignOut(user_name);
+				const { user } = await authServiceInstance.SignOut(req.body);
 				return res.status(200).json({ user });
 			} catch (e) {
 				next(e);
@@ -59,11 +60,12 @@ export default (app: Router) => {
 		'/user',
 		async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const { user_name } = req.body;
+				//const { user_name } = req.body;
 				const authServiceInstance = new AuthService();
-
-				const { user } = await authServiceInstance.GetUser(user_name);
-				return res.status(200).json({ user });
+				const recordServiceInstance = new RecordService();
+				const { user } = await authServiceInstance.GetUser(req.body);
+				const {rating} = await recordServiceInstance.GetUserRating(req.body.game_id, user.user_id);
+				return res.status(200).json({ ...user,...rating  });
 			} catch (e) {
 				next(e);
 			}
