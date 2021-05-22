@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { IUserInputDTO } from '../../interfaces/IUser';
 import AuthService from '../../services/auth';
 import RecordService from '../../services/record';
 import middlewares from '../middlewares';
@@ -64,9 +65,10 @@ export default (app: Router) => {
 				const authServiceInstance = new AuthService();
 				const { user } = await authServiceInstance.GetUser(req.body);
 				console.log(user);
-				
+				const udat : IUserInputDTO = req.body;
+				console.log(udat);
 				const recordServiceInstance = new RecordService();
-				const {rating} = await recordServiceInstance.GetUserRating(user.game_id,user.user_id);
+				const {rating} = await recordServiceInstance.GetUserRating(udat.game_id,user.user_id);
 				return res.status(200).json({ ...user, ...rating  });
 			} catch (e) {
 				next(e);
