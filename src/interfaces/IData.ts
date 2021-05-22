@@ -3,8 +3,8 @@ export interface IDataMatchLog{
     game_id : number;
     user_a_id : number;
     user_b_id : number;
-    a_score : number;
-    b_score : number;
+    a_point : number;
+    b_point : number;
     created_at? : string;
 }
 

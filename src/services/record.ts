@@ -16,8 +16,8 @@ export default class RecordService{
             let prevRecordB = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_b_id});
             
             //calculate new rating
-            const [rating_1_a, rating_1_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_score,dataMatchLog.b_score,'elo',25);
-            const [rating_2_a, rating_2_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_score,dataMatchLog.b_score,'decay',0.6);
+            const [rating_1_a, rating_1_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_point,dataMatchLog.b_point,'elo',25);
+            const [rating_2_a, rating_2_b]= this.rating(prevRecordA.rating_1,prevRecordB.rating_1,dataMatchLog.a_point,dataMatchLog.b_point,'decay',0.6);
 
             //put updated rating in the Record table
             await Record.update({game_id:dataMatchLog.game_id, user_id:dataMatchLog.user_a_id},{rating_1:rating_1_a, rating_2:rating_2_a});
