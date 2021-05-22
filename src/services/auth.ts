@@ -108,8 +108,8 @@ export default class AuthService {
 	 * 유저 이름을 입력하고 현재 유저의 상태를 반환한다.
 	 * @param userName 유저 이름
 	 */
-	public async GetUser(userName: string): Promise<{ user: IUser}> {
-		const userRecord = await User.findOne({ user_name: userName });
+	public async GetUser(userInputDTO:IUserInputDTO): Promise<{ user: IUser}> {
+		const userRecord = await User.findOne({ ...userInputDTO });
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
