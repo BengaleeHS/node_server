@@ -60,7 +60,7 @@ export default class AuthService {
 		userRecord.is_login = true;
 
 		await userRecord.save();
-
+		
 		const user = JSON.parse(JSON.stringify(userRecord));
 		return { user };
 	}
