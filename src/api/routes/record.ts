@@ -6,7 +6,7 @@ const route = Router();
 
 export default(app:Router) =>{
     app.use('/record', route);
-    route.post('/',
+    route.post('',
         async (req: Request, res : Response, next: NextFunction) => {
             try{
                 const recordServiceInstance = new RecordService();
