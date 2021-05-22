@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import middlewares from '../middlewares';
 import RecordService from '../../services/record';
+
 const route = Router();
 
 export default(app:Router) =>{

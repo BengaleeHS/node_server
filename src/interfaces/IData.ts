@@ -5,7 +5,7 @@ export interface IDataMatchLog{
     user_b_id : number;
     a_score : number;
     b_score : number;
-    created_at : string;
+    created_at? : string;
 }
 
 export interface IDataRating{
