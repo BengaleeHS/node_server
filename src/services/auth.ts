@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import config from '../config';
 import User from '../models/User';
+import Game from '../models/Game';
 import { IUser, IUserInputDTO } from '../interfaces/IUser';
 
 /**
@@ -18,6 +19,16 @@ export default class AuthService {
 	 * @param userInputDTO 유저가 입력한 유저 정보
 	 * @returns { user } 생성된 유저 정보, 토큰
 	 */
+	private async isGameExists(game_id:number):Promise<{exists:boolean}>{
+		const gameExists= await Game.find({
+			game_id: game_id,
+		});
+		if (typeof gameExists === 'undefined' ) {
+			return {exists:false};
+		}
+		return {exists:true};
+	}
+
 	public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
 		try {
 			/* 모든 정보가 입력되었는지 확인한다 */
@@ -26,7 +37,11 @@ export default class AuthService {
 				err['status'] = 400;
 				throw err;
 			}
-
+			if((await this.isGameExists(userInputDTO.game_id) )=== {exists:false}){
+				const err = new Error('The game do not exists');
+				err['status'] = 400;
+				throw err;
+			}
 			let userRecord = User.create({ ...userInputDTO });
 
 			const getSameUsername = await User.find({
