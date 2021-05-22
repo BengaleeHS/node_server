@@ -49,8 +49,7 @@ export default class AuthService {
 
 	/**
 	 * 유저 이름을 입력하고 로그인을 진행한다.
-	 * @param email 유저의 이메일
-	 * @param password 유저의 패스워드
+	 * @param userName 유저 이름
 	 */
 	public async SignIn(userName: string): Promise<{ user: IUser }> {
 		const userRecord = await User.findOne({ user_name: userName });
@@ -66,6 +65,10 @@ export default class AuthService {
 		return { user };
 	}
 
+	/**
+	 * 유저 이름을 입력하고 로그아웃을 진행한다.
+	 * @param userName 유저 이름
+	 */
 	public async SignOut(userName: string): Promise<{ user: IUser }> {
 		const userRecord = await User.findOne({ user_name: userName });
 		if (!userRecord) {
@@ -75,6 +78,21 @@ export default class AuthService {
 		userRecord.is_login = false;
 
 		await userRecord.save();
+
+		const user = JSON.parse(JSON.stringify(userRecord));
+
+		return { user };
+	}
+
+	/**
+	 * 유저 이름을 입력하고 현재 유저의 상태를 반환한다.
+	 * @param userName 유저 이름
+	 */
+	public async GetUser(userName: string): Promise<{ user: IUser }> {
+		const userRecord = await User.findOne({ user_name: userName });
+		if (!userRecord) {
+			throw new Error('User not registered');
+		}
 
 		const user = JSON.parse(JSON.stringify(userRecord));
 

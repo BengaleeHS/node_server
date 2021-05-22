@@ -16,9 +16,9 @@ export default (app: Router) => {
 			try {
 				const authServiceInstance = new AuthService();
 
-				const { user, token } = await authServiceInstance.SignUp(req.body);
+				const { user } = await authServiceInstance.SignUp(req.body);
 
-				return res.status(201).json({ user, token });
+				return res.status(201).json({ user });
 			} catch (e) {
 				next(e);
 			}
@@ -29,29 +29,44 @@ export default (app: Router) => {
 		'/signin',
 		async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				const { email, password } = req.body;
+				const { user_name } = req.body;
 				const authServiceInstance = new AuthService();
 
-				const { user, token } = await authServiceInstance.SignIn(
-					email,
-					password,
-				);
-				return res.status(200).json({ user, token });
+				const { user } = await authServiceInstance.SignIn(user_name);
+				return res.status(200).json({ user });
 			} catch (e) {
 				next(e);
 			}
 		},
 	);
 
-	/**
-	 * JWT을 이용한 사용자 인증 방법은 일반적으로 로그아웃을 지원하지 않습니다.
-	 * 로그아웃을 구현하는 방법이 있긴 하지만 지금 상황에서 불필요하여 작성하지 않았습니다.
-	 */
 	route.post(
-		'/logout',
-		middlewares.isAuth,
+		'/signout',
 		async (req: Request, res: Response, next: NextFunction) => {
-			return res.json({}).status(200);
+			try {
+				const { user_name } = req.body;
+				const authServiceInstance = new AuthService();
+
+				const { user } = await authServiceInstance.SignOut(user_name);
+				return res.status(200).json({ user });
+			} catch (e) {
+				next(e);
+			}
+		},
+	);
+
+	route.get(
+		'/user',
+		async (req: Request, res: Response, next: NextFunction) => {
+			try {
+				const { user_name } = req.body;
+				const authServiceInstance = new AuthService();
+
+				const { user } = await authServiceInstance.GetUser(user_name);
+				return res.status(200).json({ user });
+			} catch (e) {
+				next(e);
+			}
 		},
 	);
 };

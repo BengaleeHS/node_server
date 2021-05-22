@@ -7,4 +7,3 @@ export interface IUser {
 export interface IUserInputDTO {
 	user_name: string;
 }
-
