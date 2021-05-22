@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Record from '../../models/Record';
 import Game from '../../models/Game';
+import User from '../../models/User';
 import FindOpponent from '../../models/FindOpponent';
 import middlewares from '../middlewares';
 import {IMatchInfo} from '../../interfaces/IMatch';
@@ -29,11 +30,16 @@ export default(app:Router) =>{
                 if(alreadyExists){
                     throw new Error("Already exists. Please use /poll");
                 } else{
-                    const waitduration = await Game.findOne({game_id:matchInfo.game_id});
-
+                    
+                    
+                    const matchOpponents = await FindOpponent.createQueryBuilder('opponent').innerJoin('record.user_id','user_id').where('game_id = :gid',{gid:matchInfo.game_id});
+                    console.log(matchOpponents);
+                    const gameInfo = await Game.findOne({game_id:matchInfo.game_id});
                     let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location});
                     await matchRecord.save();
-                    res.status(201).json({"success":true, "timeout":waitduration.matching_duration, "location": matchInfo.location});
+
+
+                    res.status(201).json({"success":true, "timeout":gameInfo.matching_duration, "location": matchInfo.location});
                 }
                 
             } catch (e){

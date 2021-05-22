@@ -26,6 +26,8 @@ export default class FindOpponent extends BaseEntity {
 
 	@Column({ name: 'location' })
 	location: string;
+	@Column({ name: 'is_complete', default:false })
+	is_complete: boolean;
 
 	@CreateDateColumn({ name: 'created_at' })
 	created_at: Date;
