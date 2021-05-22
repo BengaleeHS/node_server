@@ -8,25 +8,28 @@ import {
 	PrimaryGeneratedColumn,
 	CreateDateColumn,
 } from 'typeorm';
+import FindOpponent from "../models/FindOpponent";
+import Record from "../models/Record";
+import Log from "../models/Log";
 
 // user는 postgreSQL의 예약어라 사용이 불가합니다.
-@Entity({ name: 'creamo_user' })
+@Entity({ name: 'chobo_user' })
 export default class User extends BaseEntity {
-	@PrimaryGeneratedColumn({ name: 'id' })
-	id: number;
+	@PrimaryGeneratedColumn({ name: 'user_id' })
+	user_id: number;
 
-	@Column({ name: 'name' })
-	name: string;
+	@Column({ name: 'user_name' })
+	user_name: string;
 
-	@Column({ name: 'email', unique: true })
-	email: string;
+	@OneToMany(() => FindOpponent, findOpponent => findOpponent.user_id)
+	find_opponents: FindOpponent[];
+	
+	@OneToMany(() => Record, record => record.user_id)
+	records: Record[]
 
-	@Column({ name: 'password' })
-	password: string;
+	@OneToMany(() => Log, log => log.user_a_id)
+	logs1: Log[];
 
-	@Column({ name: 'salt' })
-	salt: string;
-
-	@CreateDateColumn({ name: 'created_at' })
-	created_at: Date;
+	@OneToMany(() => Log, log => log.user_b_id)
+	logs2: Log[];
 }
