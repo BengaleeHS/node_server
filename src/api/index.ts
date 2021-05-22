@@ -8,5 +8,6 @@ export default () => {
 	const app = Router();
 	auth(app);
 	record(app);
+	match(app);
 	return app;
 };
