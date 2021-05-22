@@ -47,10 +47,10 @@ export default class RecordService{
         let eA = 1./(1.+Math.pow(10,(rB-rA)/400.));
         let eB = 1./(1.+Math.pow(10,(rA-rB)/400.));
 
-        return [(rA+k*(eA-sA)), (rB+k*(eB-sB))];
+        return [Math.round(rA+k*(eA-sA)), Math.round(rB+k*(eB-sB))];
     }
 
     private decay(r:number, s:number, d:number):number{
-        return 1000*s+r*d;
+        return Math.round(1000*s+r*d);
     }
 }
