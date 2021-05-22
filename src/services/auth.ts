@@ -19,14 +19,14 @@ export default class AuthService {
 	 * @param userInputDTO 유저가 입력한 유저 정보
 	 * @returns { user } 생성된 유저 정보, 토큰
 	 */
-	private async isGameExists(game_id:number):Promise<{exists:boolean}>{
-		const gameExists= await Game.find({
+	private async isGameExists(game_id:number){
+		const gameExists= await Game.findOne({
 			game_id: game_id,
 		});
-		if (typeof gameExists === 'undefined' ) {
-			return {exists:false};
+		if (!gameExists) {
+			return false;
 		}
-		return {exists:true};
+		return false;
 	}
 
 	public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
@@ -37,7 +37,7 @@ export default class AuthService {
 				err['status'] = 400;
 				throw err;
 			}
-			if((await this.isGameExists(userInputDTO.game_id) )=== {exists:false}){
+			if((await this.isGameExists(userInputDTO.game_id) )=== false){
 				const err = new Error('The game do not exists');
 				err['status'] = 400;
 				throw err;
