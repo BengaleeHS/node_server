@@ -62,7 +62,6 @@ export default class RecordService{
 
     public async GetUserRating(gid:number, uid:number): Promise<{rating:IDataRating}>{
         let record = await Record.findOne({game_id: gid, user_id: uid});
-        console.log(uid);
         if(!record) {
             throw Error("User record missing!");
         }
