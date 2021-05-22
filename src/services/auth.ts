@@ -109,7 +109,7 @@ export default class AuthService {
 	 * @param userName 유저 이름
 	 */
 	public async GetUser(userInputDTO:IUserInputDTO): Promise<{ user: IUser}> {
-		console.log(userInputDTO);
+		console.log({...userInputDTO});
 		const userRecord = await User.findOne({ ...userInputDTO });
 		if (!userRecord) {
 			throw new Error('User not registered');
