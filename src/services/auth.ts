@@ -113,6 +113,7 @@ export default class AuthService {
 		if (!userRecord) {
 			throw new Error('User not registered');
 		}
+		console.log(userRecord);
 		const user = JSON.parse(JSON.stringify(userRecord));
 		
 		return {user} ;
