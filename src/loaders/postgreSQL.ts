@@ -4,6 +4,10 @@ import AuthService from '../services/auth';
 import config from '../config';
 
 import User from '../models/User';
+import Record from "../models/Record";
+import Log from "../models/Log";
+import Game from "../models/Game";
+import FindOpponent from "../models/FindOpponent";
 
 export default async (): Promise<Connection> => {
 	const dbConnection = await createConnection({
@@ -17,6 +21,10 @@ export default async (): Promise<Connection> => {
 		logging: false,
 		entities: [
 			User,
+			Record,
+			Log,
+			Game,
+			FindOpponent,
 		],
 		// dropSchema는 커넥션이 실행 될 때마다 데이터베이스를 삭제하고 생성합니다.
 		// 개발버전에서만 사용해야합니다.
@@ -30,15 +38,5 @@ export default async (): Promise<Connection> => {
 	process.stdout.write('🍓 Creating initial rows of creamo_user table');
 	process.stdout.cursorTo(48);
 	process.stdout.write('(1/3)\n');
-	// 크리모의 관리자 권한을 가진 유저를 생성합니다.
-	const isThereAdminUser = await User.findOne({ email: 'admin@creamo.com' });
-	if (!isThereAdminUser) {
-		await new AuthService().SignUp({
-			name: 'creamo_admin',
-			email: 'admin@creamo.com',
-			password: 'creamopassword!',
-		});
-	}
-
 	return dbConnection;
 };
