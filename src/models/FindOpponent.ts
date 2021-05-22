@@ -24,6 +24,9 @@ export default class FindOpponent extends BaseEntity {
 	@JoinColumn({ name: 'user_id', referencedColumnName: 'user_id' })
 	user_id: number;
 
+	@Column({ name: 'location' })
+	location: string;
+
 	@CreateDateColumn({ name: 'created_at' })
 	created_at: Date;
 }
