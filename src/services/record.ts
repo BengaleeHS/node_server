@@ -60,8 +60,9 @@ export default class RecordService{
         return Math.round(1000*s+r*d);
     }
 
-    public async GetUserRating(game_id:number, user_id:number): Promise<{rating:IDataRating}>{
-        let record = await Record.findOne({game_id: game_id, user_id: user_id});
+    public async GetUserRating(gid:number, uid:number): Promise<{rating:IDataRating}>{
+        let record = await Record.findOne({game_id: gid, user_id: uid});
+        console.log(uid);
         if(!record) {
             throw Error("User record missing!");
         }
