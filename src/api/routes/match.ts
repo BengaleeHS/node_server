@@ -18,19 +18,22 @@ export default(app:Router) =>{
                 //게임명
                 //uid
                 let matchInfo : IMatchInfo = req.body;
+
                 const alreadyExists = await FindOpponent.findOne({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
+
                 if(!req.socket.remoteAddress){
                     throw new Error("Cannot Get Client Address");
                 }
                 matchInfo.location =  req.socket.remoteAddress;
+
                 if(alreadyExists){
                     throw new Error("Already exists. Please use /poll");
                 } else{
                     const waitduration = await Game.findOne({game_id:matchInfo.game_id});
 
-                    let matchRecord = FindOpponent.create({ ...alreadyExists});
+                    let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location});
                     await matchRecord.save();
-                    res.status(201).json({"success":true, "timeout":waitduration.matching_duration});
+                    res.status(201).json({"success":true, "timeout":waitduration.matching_duration, "location": matchInfo.location});
                 }
                 
             } catch (e){
