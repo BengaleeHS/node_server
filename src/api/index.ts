@@ -6,6 +6,6 @@ import record from './routes/record';
 export default () => {
 	const app = Router();
 	auth(app);
-	record(app)
+	record(app);
 	return app;
 };

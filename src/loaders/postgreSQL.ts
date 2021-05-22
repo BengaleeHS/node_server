@@ -22,7 +22,7 @@ export default async (): Promise<Connection> => {
 		entities: [User, Record, Log, Game, FindOpponent],
 		// dropSchema는 커넥션이 실행 될 때마다 데이터베이스를 삭제하고 생성합니다.
 		// 개발버전에서만 사용해야합니다.
-		dropSchema: true,
+		dropSchema: false,
 	});
 
 	/**

@@ -11,7 +11,7 @@ export default class RecordService{
             let createLog = Log.create(dataMatchLog);
             
             //Load previous rating from Record table
-            console.log(dataMatchLog.game_id);
+ 
             let prevRecordA = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_a_id});
             let prevRecordB = await Record.findOne({game_id: dataMatchLog.game_id, user_id: dataMatchLog.user_b_id});
             
