@@ -30,11 +30,9 @@ export default class FindOpponent extends BaseEntity {
 	@Column({ name: 'rating' })
 	rating: number;
 
-	@Column({ name: 'matched_with', default:-1 })
+	@Column({ name: 'matched_with', default: -1 })
 	matched_with: number;
 
 	@CreateDateColumn({ name: 'created_at' })
 	created_at: Date;
-
-
 }

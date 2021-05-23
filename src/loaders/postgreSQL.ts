@@ -29,8 +29,12 @@ export default async (): Promise<Connection> => {
 	 * 아래 부분은 데이터베이스의 초기 rows들을 정의하는 부분입니다.
 	 * @TODO 서버의 개발 방향에 따라 알맞게 수정하시면 됩니다.
 	 */
-	await Game.create({game_name:"tictactoe", rating_type:1, matching_range:500, matching_duration:1000}).save();
-	process.stdout.write('🍓 Creating initial rows of creamo_user table');
-	process.stdout.cursorTo(48);
+	await Game.create({
+		game_name: 'tictactoe',
+		rating_type: 1,
+		matching_range: 500,
+		matching_duration: 1000,
+	}).save();
+	process.stdout.write('🍓 Creating initial rows of creamo_user table\n');
 	return dbConnection;
 };
