@@ -61,4 +61,50 @@ export default(app:Router) =>{
 
         }
     );
+    route.post('/poll', async (req:Request, res:Response, next:NextFunction) =>{
+        try{
+
+            let matchInfo : IMatchInfo = req.body;
+
+            const alreadyExists = await FindOpponent.findOne({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
+
+            if(alreadyExists){
+                if(alreadyExists.matched_with !==-1){
+                    const opponent = await FindOpponent.findOne({user_id:alreadyExists.matched_with, game_id: matchInfo.game_id});
+                    res.status(200).json({"success":true, "matched":true, "location":opponent.location});
+                }
+                res.status(200).json({"success":true, "matched":false});
+            } else{
+                throw new Error("There is no match submit!");
+            }
+            
+        } catch (e){
+            next(e);
+        }
+
+    });
+    route.post('/complete', async (req:Request, res:Response, next:NextFunction) =>{
+        try{
+
+            let matchInfo : IMatchInfo = req.body;
+
+            const alreadyExists = await FindOpponent.findOne({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
+
+            if(alreadyExists){
+                if(alreadyExists.matched_with !==-1){
+                    await FindOpponent.delete({user_id:alreadyExists.matched_with, game_id: matchInfo.game_id});
+                    await FindOpponent.delete({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
+                    res.status(200).json({"success":true});
+                }
+                res.status(200).json({"success":false});
+            } else{
+                throw new Error("There is no match to delete");
+            }
+            
+        } catch (e){
+            next(e);
+        }
+
+    }
+);
 }
