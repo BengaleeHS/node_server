@@ -32,8 +32,7 @@ export default(app:Router) =>{
                 } else{
 
                     //find wating users
-                    const waitingUsers = await FindOpponent.find({game_id:matchInfo.game_id, user_id:matchInfo.user_id, is_complete:false});
-                    console.log(matchInfo);
+                    const waitingUsers = await FindOpponent.find({game_id:matchInfo.game_id, is_complete:false});
                     console.log(waitingUsers);
 
                     const gameInfo = await Game.findOne({game_id:matchInfo.game_id});
