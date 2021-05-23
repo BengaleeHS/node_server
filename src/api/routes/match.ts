@@ -105,6 +105,24 @@ export default(app:Router) =>{
             next(e);
         }
 
-    }
-);
+    });
+    route.post('/cancel', async (req:Request, res:Response, next:NextFunction) =>{
+        try{
+
+            let matchInfo : IMatchInfo = req.body;
+
+            const alreadyExists = await FindOpponent.findOne({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
+
+            if(alreadyExists){
+                await FindOpponent.delete({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
+                res.status(200).json({"success":true});
+            } else{
+                throw new Error("There is no match to delete");
+            }
+            
+        } catch (e){
+            next(e);
+        }
+
+    });
 }
