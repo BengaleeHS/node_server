@@ -31,15 +31,16 @@ export default(app:Router) =>{
                     throw new Error("Already exists. Please use /poll");
                 } else{
 
-                    //join!!
-                    const waitingUsers = await FindOpponent.find({game_id:matchInfo.game_id, user_id:matchInfo.user_id})
+                    //find wating users
+                    const waitingUsers = await FindOpponent.find({game_id:matchInfo.game_id, user_id:matchInfo.user_id, is_complete:false});
                     console.log(waitingUsers);
 
                     const gameInfo = await Game.findOne({game_id:matchInfo.game_id});
                     const ratingInfo = await Record.findOne({game_id:matchInfo.game_id, user_id:matchInfo.user_id});
-                    let rating = ratingInfo.rating_1;
-                    if (gameInfo.rating_type === 2) rating = ratingInfo.rating_2;
-                    let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location, rating:rating});
+
+                    let rat = ratingInfo.rating_1;
+                    if (gameInfo.rating_type === 2) rat = ratingInfo.rating_2;
+                    let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location, rating:rat});
                     await matchRecord.save();
 
 
