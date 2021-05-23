@@ -73,7 +73,10 @@ export default(app:Router) =>{
                     const opponent = await FindOpponent.findOne({user_id:alreadyExists.matched_with, game_id: matchInfo.game_id});
                     res.status(200).json({"success":true, "matched":true, "location":opponent.location});
                 }
-                res.status(200).json({"success":true, "matched":false});
+                else{
+                    res.status(200).json({"success":true, "matched":false});
+                }
+                
             } else{
                 throw new Error("There is no match submit!");
             }
@@ -95,8 +98,10 @@ export default(app:Router) =>{
                     await FindOpponent.delete({user_id:alreadyExists.matched_with, game_id: matchInfo.game_id});
                     await FindOpponent.delete({user_id:matchInfo.user_id, game_id: matchInfo.game_id});
                     res.status(200).json({"success":true});
+                }else{
+                    res.status(200).json({"success":false});
                 }
-                res.status(200).json({"success":false});
+                
             } else{
                 throw new Error("There is no match to delete");
             }
