@@ -71,7 +71,7 @@ export default(app:Router) =>{
             if(alreadyExists){
                 if(alreadyExists.matched_with !==-1){
                     const opponent = await FindOpponent.findOne({user_id:alreadyExists.matched_with, game_id: matchInfo.game_id});
-                    res.status(200).json({"success":true, "matched":true, "location":opponent.location});
+                    res.status(200).json({"success":true, "matched":true, "location":opponent.location, "opponent_id":alreadyExists.matched_with});
                 }
                 else{
                     res.status(200).json({"success":true, "matched":false});
