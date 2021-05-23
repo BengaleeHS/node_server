@@ -46,7 +46,7 @@ export default(app:Router) =>{
                             break;
                         }                        
                     }
-                    console.log(await FindOpponent.find({game_id:matchInfo.game_id}));
+                    //console.log(await FindOpponent.find({game_id:matchInfo.game_id}));
                     
                     let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location, rating:rat, matched_with:matchUserId});
                     await matchRecord.save();
