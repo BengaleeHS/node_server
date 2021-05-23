@@ -32,10 +32,14 @@ export default(app:Router) =>{
                 } else{
 
                     //join!!
-
+                    const waitingUsers = await FindOpponent.find({game_id:matchInfo.game_id, user_id:matchInfo.user_id})
+                    console.log(waitingUsers);
 
                     const gameInfo = await Game.findOne({game_id:matchInfo.game_id});
-                    let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location});
+                    const ratingInfo = await Record.findOne({game_id:matchInfo.game_id, user_id:matchInfo.user_id});
+                    let rating = ratingInfo.rating_1;
+                    if (gameInfo.rating_type === 2) rating = ratingInfo.rating_2;
+                    let matchRecord = FindOpponent.create({ game_id:matchInfo.game_id, user_id:matchInfo.user_id, location: matchInfo.location, rating:rating});
                     await matchRecord.save();
 
 
